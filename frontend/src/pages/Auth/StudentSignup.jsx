@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../api/axios"; // ✅ Use your axios instance
 
 const StudentSignup = () => {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const StudentSignup = () => {
 
   const [error, setError] = useState("");
 
-  // Disable global padding for auth pages
   useEffect(() => {
     document.body.classList.add("auth-page");
     return () => document.body.classList.remove("auth-page");
@@ -31,8 +30,9 @@ const StudentSignup = () => {
     setError("");
 
     try {
-      console.log("Sending signup data:", formData); // 👈 Debug line
-      const res = await axios.post("http://localhost:4000/api/auth/signup", {
+      console.log("Sending signup data:", formData);
+
+      const res = await API.post("/auth/signup", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
