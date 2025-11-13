@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
-import API from "../../api/axios";
+import API from "../api/axios";
 import toast from "react-hot-toast";
 
 const CourseDetails = () => {

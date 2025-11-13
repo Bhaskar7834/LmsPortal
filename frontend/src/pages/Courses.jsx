@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/axios";
+import API from "../api/axios";
 import toast from "react-hot-toast";
 
 // Assets
@@ -21,7 +21,7 @@ import {
   CardTitle,
   CardDescription,
   CardLink,
-} from "../../styles/SpecialProgramsStyle";
+} from "../styles/SpecialProgramsStyle";
 
 const getCourseImage = (course) => {
   const title = course.title?.toLowerCase() || "";
