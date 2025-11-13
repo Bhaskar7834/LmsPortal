@@ -1,18 +1,8 @@
 import axios from "axios";
 
-/**
- * ===============================================
- * 🌐 API Configuration for AEIS LMS Portal
- * ===============================================
- * Handles all HTTP requests to the backend.
- * Automatically attaches JWT tokens (if available)
- * for protected routes.
- */
-
-// Dynamic Base URL (adjusts for localhost or production)
+// Dynamic Base URL for production
 const BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4000/api"; 
-  // 👈 use port 4000 (your backend)
+  import.meta.env.VITE_API_URL || "https://lmsportal-gfe7.onrender.com/api";
 
 const API = axios.create({
   baseURL: BASE_URL,
@@ -21,7 +11,6 @@ const API = axios.create({
   },
 });
 
-// === Attach JWT Token Automatically ===
 API.interceptors.request.use(
   (req) => {
     const token = localStorage.getItem("token");
@@ -33,11 +22,9 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// === Handle Global Errors (optional but useful) ===
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Example: auto-logout on 401
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
