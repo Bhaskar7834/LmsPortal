@@ -1,62 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import API from "../../api/axios"; // ✅ Use your axios instance
+import { useNavigate, Link } from "react-router-dom";
+import API from "../../api/axios"; // ✅ Use API instance (no localhost)
 
-const StudentSignup = () => {
+const StudentSignin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-
+  // Disable global padding for auth pages
   useEffect(() => {
     document.body.classList.add("auth-page");
     return () => document.body.classList.remove("auth-page");
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
+  // Handle Signin
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      console.log("Sending signup data:", formData);
-
-      const res = await API.post("/auth/signup", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: "student",
+      const res = await API.post("/auth/signin", {
+        email,
+        password,
       });
 
-      alert("✅ Registration successful!");
-      console.log("Response:", res.data);
+      console.log("✅ Signin Success:", res.data);
 
-      navigate("/studentsignin");
+      // Save auth data
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("role", res.data.user.role);
+
+      alert("🎓 Student signin successful!");
+
+      // Redirect based on role
+      const role = res.data.user.role?.toLowerCase();
+
+      role === "admin"
+        ? navigate("/admin/dashboard")
+        : navigate("/dashboard");
+
     } catch (err) {
-      console.error("Registration Error:", err);
-      setError(err.response?.data?.message || "Registration failed!");
+      console.error("❌ Signin Error:", err);
+      setError(err.response?.data?.message || "Invalid email or password");
     }
   };
 
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100dvh",
         background: "linear-gradient(135deg, #007bff, #6c63ff)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         fontFamily: "Poppins, sans-serif",
       }}
     >
@@ -71,36 +73,27 @@ const StudentSignup = () => {
           textAlign: "center",
         }}
       >
-        <h2 style={{ color: "#007bff", marginBottom: "25px" }}>🎓 Student Signup</h2>
+        <h2
+          style={{
+            color: "#007bff",
+            fontWeight: "700",
+            marginBottom: "25px",
+            fontSize: "24px",
+          }}
+        >
+          🎓 Student Signin
+        </h2>
 
         <form onSubmit={handleSubmit}>
+          {/* Email */}
           <div style={{ textAlign: "left", marginBottom: "15px" }}>
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-              }}
-            />
-          </div>
-
-          <div style={{ textAlign: "left", marginBottom: "15px" }}>
-            <label>Email</label>
+            <label style={{ marginBottom: "8px", display: "block" }}>Email</label>
             <input
               type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -110,15 +103,15 @@ const StudentSignup = () => {
             />
           </div>
 
+          {/* Password */}
           <div style={{ textAlign: "left", marginBottom: "20px" }}>
-            <label>Password</label>
+            <label style={{ marginBottom: "8px", display: "block" }}>Password</label>
             <input
               type="password"
-              name="password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={handleChange}
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -128,27 +121,42 @@ const StudentSignup = () => {
             />
           </div>
 
-          {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
+          {/* Error */}
+          {error && (
+            <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>
+          )}
 
+          {/* Signin Button */}
           <button
             type="submit"
             style={{
               width: "100%",
+              padding: "12px",
               background: "#007bff",
               color: "#fff",
               border: "none",
               borderRadius: "8px",
-              padding: "12px",
               fontWeight: "600",
               cursor: "pointer",
             }}
           >
-            Sign Up
+            Signin
           </button>
         </form>
+
+        {/* Footer */}
+        <p style={{ marginTop: "20px", color: "#555" }}>
+          Don’t have an account?{" "}
+          <Link
+            to="/studentsignup"
+            style={{ color: "#007bff", fontWeight: "600" }}
+          >
+            Register Here
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
 
-export default StudentSignup;
+export default StudentSignin;
