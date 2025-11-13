@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../api/axios"; // ✅ Use your axios instance
+import API from "../../api/axios"; // ✅ Use your axios instance
 
 const StudentSignup = () => {
   const navigate = useNavigate();
