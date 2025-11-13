@@ -1,0 +1,15 @@
+/* --- Global Color Palette (Byju's Red Theme) --- */
+:root, body { /* 💡 Ensure variables are defined on the highest elements */
+  /* Primary Color shifted to Byju's signature Crimson Red */
+  --color-primary: #EE1439;        
+  --color-primary-dark: #CE002E;   
+  --color-primary-shadow: rgba(238, 20, 57, 0.4); 
+  
+  /* Neutral Colors */
+  --color-background-base: #ffffff;      
+  --color-background-surface: #f5f5f5;   
+  
+  /* Text Colors */
+  --color-text-body: #333333;        
+  --color-text-light: #6c757d;       
+}

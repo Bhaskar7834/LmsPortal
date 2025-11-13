@@ -1,0 +1,17 @@
+/* src/main.css */
+
+:root {
+  --primary-color: #004358;
+  --secondary-color: #00AEEF;
+  --accent-color: #ED1C24;
+  --text-dark: #1D293F;
+  --bg-light: #F4F7F6;
+  --bg-white: #FFFFFF;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

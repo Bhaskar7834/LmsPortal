@@ -1,0 +1,16 @@
+{
+  "name": "mern-school-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "cloudinary": "^2.8.0",
+    "dotenv": "^17.2.3",
+    "multer": "^2.0.2"
+  }
+}
